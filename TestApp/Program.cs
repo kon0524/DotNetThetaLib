@@ -14,6 +14,15 @@ namespace TestApp
             EventConnection eventConnection = 
                 new EventConnection(IP, PORT, cmdDataConnection.ConnectionNumber);
 
+            // Open Session
+            cmdDataConnection.operationRequest(
+                DataPhaseInfo.NoDataOrDataInPhase, OperationCode.OpenSession, 1, 1);
+
+            // Get Object Handles
+            cmdDataConnection.operationRequest(
+                DataPhaseInfo.NoDataOrDataInPhase, OperationCode.GetObjectHandles, 2, 0xFFFFFFFF, 0xFFFFFFFF);
+
+
             cmdDataConnection.close();
             eventConnection.close();
         }

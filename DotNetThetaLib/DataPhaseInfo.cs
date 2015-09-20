@@ -3,8 +3,8 @@
     public enum DataPhaseInfo
 	{
 		UnknownDataPhase		= 0x00000000,
-		NoDataOrDataInPhase,
-		DataOutPhase
+		NoDataOrDataInPhase,    // R -> I
+		DataOutPhase            // I -> R
 	}
 }
 
