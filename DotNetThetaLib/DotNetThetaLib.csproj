@@ -44,6 +44,7 @@
     <Compile Include="Connection.cs" />
     <Compile Include="DataPhaseInfo.cs" />
     <Compile Include="EventConnection.cs" />
+    <Compile Include="ObjectInfo.cs" />
     <Compile Include="OperationCode.cs" />
     <Compile Include="PacketType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

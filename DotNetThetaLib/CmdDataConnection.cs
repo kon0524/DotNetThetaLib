@@ -9,6 +9,17 @@ namespace DotNetThetaLib
 		// フィールド
         private Guid guid = new Guid();
 		private const string FRIENDLY_NAME = "TEST";
+        private byte[] recvData = null;
+
+        public byte[] RecvData
+        {
+            get
+            {
+                return recvData;
+            }
+        }
+
+
 
         // プロパティ
         public UInt32 ConnectionNumber { get; private set; }
@@ -41,14 +52,14 @@ namespace DotNetThetaLib
             UInt32 length = BitConverter.ToUInt32(data, 0);
             PacketType pt = (PacketType)BitConverter.ToUInt32(data, 4);
             ResponseCode rc;
-            byte[] recvData;
-            int recvDataCount = 0;
+
+            // データフェーズがあれば受信する
             if (pt == PacketType.StartData)
             {
                 // 全データサイズ
                 UInt64 tlen = BitConverter.ToUInt64(data, 12);
                 recvData = new byte[tlen];
-
+                int recvDataCount = 0;
                 do
                 {
                     data = recvAllData();
