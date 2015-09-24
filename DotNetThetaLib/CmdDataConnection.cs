@@ -37,7 +37,7 @@ namespace DotNetThetaLib
             ConnectionNumber = BitConverter.ToUInt32(data, 8);
 		}
 
-        public void operationRequest(
+        public ResponseCode operationRequest(
             DataPhaseInfo dpi, OperationCode code, UInt32 tid,
             UInt32 param1 = 0, UInt32 param2 = 0, UInt32 param3 = 0, UInt32 param4 = 0, UInt32 param5 = 0)
         {
@@ -51,7 +51,6 @@ namespace DotNetThetaLib
             data = recvAllData();
             UInt32 length = BitConverter.ToUInt32(data, 0);
             PacketType pt = (PacketType)BitConverter.ToUInt32(data, 4);
-            ResponseCode rc;
 
             // データフェーズがあれば受信する
             if (pt == PacketType.StartData)
@@ -74,7 +73,8 @@ namespace DotNetThetaLib
                 length = BitConverter.ToUInt32(data, 0);
                 pt = (PacketType)BitConverter.ToUInt32(data, 4);
             }
-            rc = (ResponseCode)BitConverter.ToUInt16(data, 8);
+
+            return (ResponseCode)BitConverter.ToUInt16(data, 8);
         }
 
         private byte[] recvDataPhase()
