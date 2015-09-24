@@ -10,7 +10,7 @@ namespace DotNetThetaLib
     public class ObjectInfo
     {
         public UInt32 StorageID { get; private set; }
-        public UInt16 ObjectFormat { get; private set; }
+        public ObjectFormats ObjectFormat { get; private set; }
         public UInt16 ProtectionStatus { get; private set; }
         public UInt32 ObjectCompressedSize { get; private set; }
         public UInt16 ThumbFormat { get; private set; }
@@ -33,7 +33,7 @@ namespace DotNetThetaLib
         {
             int index = 52;
             StorageID = BitConverter.ToUInt32(data, 0);
-            ObjectFormat = BitConverter.ToUInt16(data, 4);
+            ObjectFormat = (ObjectFormats)BitConverter.ToUInt16(data, 4);
             ProtectionStatus = BitConverter.ToUInt16(data, 6);
             ObjectCompressedSize = BitConverter.ToUInt32(data, 8);
             ThumbFormat = BitConverter.ToUInt16(data, 12);
