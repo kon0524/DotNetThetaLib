@@ -92,6 +92,10 @@ namespace DotNetThetaLib
             return (ResponseCode)BitConverter.ToUInt16(data, 8);
         }
 
+        /// <summary>
+        /// DataOutPhaseを実行する
+        /// </summary>
+        /// <param name="tid"></param>
         private void sendDataPhase(UInt32 tid)
         {
             byte[] data = startData(tid);
@@ -101,6 +105,10 @@ namespace DotNetThetaLib
             stream.Write(data, 0, data.Length);
         }
 
+        /// <summary>
+        /// DataInPhaseを実行する
+        /// </summary>
+        /// <returns></returns>
         private byte[] recvDataPhase()
         {
             byte[] data = recvAllData();
@@ -131,6 +139,18 @@ namespace DotNetThetaLib
             return data;
         }
 
+        /// <summary>
+        /// OperationRequestのデータを作成する
+        /// </summary>
+        /// <param name="dpi"></param>
+        /// <param name="oc"></param>
+        /// <param name="tid"></param>
+        /// <param name="param1"></param>
+        /// <param name="param2"></param>
+        /// <param name="param3"></param>
+        /// <param name="param4"></param>
+        /// <param name="param5"></param>
+        /// <returns></returns>
         private byte[] operationRequestData(DataPhaseInfo dpi, OperationCode oc, UInt32 tid,
             UInt32 param1 = 0, UInt32 param2 = 0, UInt32 param3 = 0, UInt32 param4 = 0, UInt32 param5 = 0)
         {
@@ -150,6 +170,11 @@ namespace DotNetThetaLib
             return data;
         }
 
+        /// <summary>
+        /// StartDataのデータを作成する
+        /// </summary>
+        /// <param name="tid"></param>
+        /// <returns></returns>
         private byte[] startData(UInt32 tid)
         {
             UInt32 length = (UInt32)(4 + 4 + 4 + 8);
@@ -162,6 +187,12 @@ namespace DotNetThetaLib
             return data;
         }
 
+        /// <summary>
+        /// EndDataのデータを作成する
+        /// </summary>
+        /// <param name="tid"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
         private byte[] endData(UInt32 tid, int startIndex)
         {
             UInt32 length = (UInt32)(4 + 4 + 4 + sendData.Length - startIndex);
