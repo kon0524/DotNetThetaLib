@@ -29,6 +29,15 @@ namespace TestApp
             cmdDataConnection.operationRequest(
                 DataPhaseInfo.NoDataOrDataInPhase, OperationCode.OpenSession, 1, 1);
 
+            // SetDevicePropValue
+            cmdDataConnection.SendData = BitConverter.GetBytes((Int16)(-2000));
+            res = cmdDataConnection.operationRequest(
+                DataPhaseInfo.DataOutPhase, OperationCode.SetDevicePropValue, 1, (UInt32)DeviceProperty.ExposureBiasCompensation);
+
+            // InitiateCapture
+            res = cmdDataConnection.operationRequest(
+                DataPhaseInfo.NoDataOrDataInPhase, OperationCode.InitiateCapture, 1);
+
             // Get Object Handles
             List<UInt32> objHndls = new List<UInt32>();
             cmdDataConnection.operationRequest(
