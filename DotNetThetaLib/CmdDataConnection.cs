@@ -10,6 +10,7 @@ namespace DotNetThetaLib
         private Guid guid = new Guid();
 		private const string FRIENDLY_NAME = "TEST";
         private byte[] recvData = null;
+        private byte[] sendData = null;
 
         public byte[] RecvData
         {
@@ -19,7 +20,17 @@ namespace DotNetThetaLib
             }
         }
 
-
+        public byte[] SendData
+        {
+            get
+            {
+                return sendData;
+            }
+            set
+            {
+                sendData = value;
+            }
+        }
 
         // プロパティ
         public UInt32 ConnectionNumber { get; private set; }
@@ -46,6 +57,10 @@ namespace DotNetThetaLib
             stream.Write(data, 0, data.Length);
 
             // データフェーズがあれば送信（未実装）
+            if (dpi == DataPhaseInfo.DataOutPhase)
+            {
+                sendDataPhase(tid);
+            }
 
             // データを受信
             data = recvAllData();
@@ -75,6 +90,15 @@ namespace DotNetThetaLib
             }
 
             return (ResponseCode)BitConverter.ToUInt16(data, 8);
+        }
+
+        private void sendDataPhase(UInt32 tid)
+        {
+            byte[] data = startData(tid);
+            stream.Write(data, 0, data.Length);
+
+            data = endData(tid, 0);
+            stream.Write(data, 0, data.Length);
         }
 
         private byte[] recvDataPhase()
@@ -122,6 +146,30 @@ namespace DotNetThetaLib
             Array.Copy(BitConverter.GetBytes(param3), 0, data, 26, 4);
             Array.Copy(BitConverter.GetBytes(param4), 0, data, 30, 4);
             Array.Copy(BitConverter.GetBytes(param5), 0, data, 34, 4);
+
+            return data;
+        }
+
+        private byte[] startData(UInt32 tid)
+        {
+            UInt32 length = (UInt32)(4 + 4 + 4 + 8);
+            byte[] data = new byte[length];
+            Array.Copy(BitConverter.GetBytes(length), data, 4);
+            Array.Copy(BitConverter.GetBytes((UInt32)PacketType.StartData), 0, data, 4, 4);
+            Array.Copy(BitConverter.GetBytes(tid), 0, data, 8, 4);
+            Array.Copy(BitConverter.GetBytes((UInt64)sendData.Length), 0, data, 12, 8);
+
+            return data;
+        }
+
+        private byte[] endData(UInt32 tid, int startIndex)
+        {
+            UInt32 length = (UInt32)(4 + 4 + 4 + sendData.Length - startIndex);
+            byte[] data = new byte[length];
+            Array.Copy(BitConverter.GetBytes(length), data, 4);
+            Array.Copy(BitConverter.GetBytes((UInt32)PacketType.EndData), 0, data, 4, 4);
+            Array.Copy(BitConverter.GetBytes(tid), 0, data, 8, 4);
+            Array.Copy(sendData, startIndex, data, 12, (sendData.Length - startIndex));
 
             return data;
         }

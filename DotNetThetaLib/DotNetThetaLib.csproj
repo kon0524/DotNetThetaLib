@@ -43,6 +43,7 @@
     <Compile Include="CmdDataConnection.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="DataPhaseInfo.cs" />
+    <Compile Include="DeviceProperty.cs" />
     <Compile Include="EventConnection.cs" />
     <Compile Include="ObjectFormats.cs" />
     <Compile Include="ObjectInfo.cs" />
